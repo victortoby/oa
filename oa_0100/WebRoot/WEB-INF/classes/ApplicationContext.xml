@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:sec="http://www.springframework.org/schema/security"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/aop
+	        http://www.springframework.org/schema/aop/spring-aop.xsd
+	        http://www.springframework.org/schema/tx
+	        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	        http://www.springframework.org/schema/data/jpa 
+	        http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd
+	        http://www.springframework.org/schema/security
+	        http://www.springframework.org/schema/security/spring-security.xsd">
+		<!-- 引入注解 -->
+		<context:annotation-config/>
+		<!-- 注解扫描 -->
+		<context:component-scan base-package="com.bjgydx.graduate"/>
+		<!-- 自动代理 -->
+		<aop:aspectj-autoproxy/>
+		<!-- 数据库连接池 -->
+		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+			<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+			<property name="url" value="jdbc:mysql://localhost:3306/oa?useUnicode=true&amp;characterEncoding=UTF-8"/>
+			<property name="username" value="root"/>
+			<property name="password" value="root"/> 
+		</bean>
+		<!-- sessionFactory -->
+		<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"/>
+			<!-- packagesToScan可以自动搜索某个package的全部标记@Entity class -->
+	        <property name="packagesToScan">
+	            <list>
+	                <value>com.**.model</value>
+	            </list>
+	        </property>
+			<property name="hibernateProperties">
+	            <value>
+	                hibernate.dialect=org.hibernate.dialect.MySQL5Dialect<!-- org.hibernate.dialect.HSQLDialect -->
+	                hibernate.show_sql=true
+	                <!-- 开启二级缓存 -->  
+	                hibernate.cache.use_second_level_cache=true
+	                <!-- 高速缓存提供程序 -->  
+	                hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.EhCacheRegionFactory
+	                hibernate.cache.use_query_cache=true
+	            </value>
+	        </property>
+		</bean>		
+		<!-- 事务管理器 -->                                   
+	    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+			<property name="sessionFactory" ref="sessionFactory"/>
+		</bean>
+		<!-- 事务拦截方法 -->
+		<tx:advice id="txAdvice" transaction-manager="transactionManager">
+	        <tx:attributes>
+		        <tx:method name="create*" propagation="REQUIRED" />
+	            <tx:method name="save*" propagation="REQUIRED" />
+	            <tx:method name="add*" propagation="REQUIRED" />
+	            <tx:method name="update*" propagation="REQUIRED" />
+	            <tx:method name="remove*" propagation="REQUIRED" />
+	            <tx:method name="del*" propagation="REQUIRED" />
+	            <tx:method name="import*" propagation="REQUIRED" />
+	           <tx:method name="*" propagation="NOT_SUPPORTED" read-only="true" />
+	        </tx:attributes>
+	    </tx:advice>
+		<!-- AOP实现事务 -->
+		<aop:config>
+			<aop:pointcut expression="execution(public * com.bjgydx.graduate.service..*.*(..))" id="bussinessService"/>
+			<aop:advisor advice-ref="txAdvice" pointcut-ref="bussinessService"/>
+		</aop:config>
+		<!-- hibernateTemplate -->
+		<bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+			<property name="sessionFactory" ref="sessionFactory"/>
+		</bean>
+</beans>
+
+
