@@ -26,14 +26,14 @@ $(function() {
 			text: '新增',
 			iconCls: 'icon-add',
 			handler: function(){
-				addMethod();
+				createMethod();
 				}
 		},'-',{
 			id:'sysOrganization_edit',
 			text:'编辑',
 			iconCls: 'icon-edit',
 			handler: function(){
-				alert('edit')
+				editMethod();
 				}
 		},'-',{
 			id:'sysOrganization_remove',
@@ -57,14 +57,28 @@ $(function() {
 	var sysOrganizationDataGrid = createDataGrid($('#sysOrganizationTable'), gridParams);
 });
 	//新增方法
-	function addMethod() {
+	function createMethod() {
 		$('#sysOrganizationCreateDialog').dialog({    
 		    title: '新增组织机构',    
 		    width: 400,    
 		    height: 200,    
 		    closed: false,    
 		    cache: false,    
-		    href: 'get_content.php',    
+		    href: '${ctx}/sysOrganization/sysOrganizationCreate',    
+		    modal: true,
+		    
+		});    
+	}
+	
+	//编辑方法
+	function editMethod() {
+		$('#sysOrganizationCreateDialog').dialog({    
+		    title: '编辑组织机构',    
+		    width: 400,    
+		    height: 200,    
+		    closed: false,    
+		    cache: false,    
+		    href: '${ctx}/sysOrganization/sysOrganizationEdit',    
 		    modal: true,
 		    
 		});    

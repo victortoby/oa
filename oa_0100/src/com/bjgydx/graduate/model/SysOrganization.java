@@ -3,11 +3,13 @@ package com.bjgydx.graduate.model;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Cacheable
@@ -32,6 +34,8 @@ public class SysOrganization {
 	public static final String ORG_LEVEL_VO = "组织机构级别";
 	
 	@Id
+	@GeneratedValue(generator = "paymentableGenerator")    
+	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")   
 	@Column(name="org_guid")	
 	public String getOrgGuid() {
 		return orgGuid;

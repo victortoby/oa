@@ -49,6 +49,8 @@
 	                <!-- 高速缓存提供程序 -->  
 	                hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.EhCacheRegionFactory
 	                hibernate.cache.use_query_cache=true
+	                <!-- 自动建表 -->
+	                hibernate.hbm2ddl.auto=update
 	            </value>
 	        </property>
 		</bean>		
