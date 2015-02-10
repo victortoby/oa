@@ -22,10 +22,10 @@ public class SysOrganization {
 	private Integer orgLevel;
 	
 	/**页面列表字段*/
-	public static final String ORG_GUID = "ORG_GUID";
-	public static final String PARENT_ORG_GUID = "PARENT_ORG_GUID";
-	public static final String ORG_NAME = "ORG_NAME";
-	public static final String ORG_LEVEL= "ORG_LEVEL";
+	public static final String ORG_GUID = "orgGuid";
+	public static final String PARENT_ORG_GUID = "parentOrgGuid";
+	public static final String ORG_NAME = "orgName";
+	public static final String ORG_LEVEL= "orgLevel";
 	
 	/**页面列表名称*/
 	public static final String ORG_GUID_VO = "组织机构GUID";

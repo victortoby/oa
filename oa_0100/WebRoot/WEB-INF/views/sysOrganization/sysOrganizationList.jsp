@@ -14,10 +14,10 @@ $(function() {
 	
 	// 表格列数组
 	var gridColumnsArray = [[
-			{field: 'orgGuid', title: "<%=SysOrganization.ORG_GUID_VO%>", width:80},
-		    {field: 'parentOrgGuid', title: '<%=SysOrganization.PARENT_ORG_GUID_VO%>',width:80},  
-		    {field: 'orgName', title: '<%=SysOrganization.ORG_NAME_VO%>', width:100},  
-		    {field: 'orgLevel', title: '<%=SysOrganization.ORG_LEVEL_VO%>', width:150}
+			{field: '<%=SysOrganization.ORG_GUID%>', title: '<%=SysOrganization.ORG_GUID_VO%>', width:80},
+		    {field: '<%=SysOrganization.PARENT_ORG_GUID%>', title: '<%=SysOrganization.PARENT_ORG_GUID_VO%>',width:80},  
+		    {field: '<%=SysOrganization.ORG_NAME%>', title: '<%=SysOrganization.ORG_NAME_VO%>', width:100},  
+		    {field: '<%=SysOrganization.ORG_LEVEL%>', title: '<%=SysOrganization.ORG_LEVEL_VO%>', width:150}
 		]];
 	 
 	//表格操作按钮
@@ -58,16 +58,13 @@ $(function() {
 });
 	//新增方法
 	function addMethod() {
-		$('#sysOrganizationCreateDialog').dialog({    
-		    title: '新增组织机构',    
+		var dialogParamsObj = {
+			title: '组织机构',    
 		    width: 400,    
 		    height: 200,    
-		    closed: false,    
-		    cache: false,    
-		    href: '${ctx}/sysOrganization/sysOrganizationaddUI',    
-		    modal: true,
-		    
-		});    
+		    url: '${ctx}/sysOrganization/sysOrganizationaddUI',    
+		};
+		var sysOrganizationCreateDialog = createDialog('add',$('#sysOrganizationCreateDialog'),dialogParamsObj);
 	}
 	
 	//编辑方法
@@ -86,7 +83,7 @@ $(function() {
 </script>
 </head>
 <body>
-    <table id="sysOrganizationTable"></table>
+    <div id="sysOrganizationTable"></div>
     <div id="sysOrganizationCreateDialog"></div>
 </body>
 </html>

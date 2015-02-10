@@ -61,11 +61,12 @@ function createDialog(optFlag, dialogObj, dialogParamsObj) {
 	    height : dialogParamsObj.height != undefined ? dialogParamsObj.height : 400,
 		maximizable : false,
 		draggable : true,
-	    closed : true,
 	    cache : false,    
 	    href :  _url,    
-	    modal: true   ,
-	    toolbar : dialogParamsObj.toolbar != undefined ? dialogParamsObj.toolbar : null
+	    modal: true,
+	    toolbar : dialogParamsObj.toolbar != undefined ? dialogParamsObj.toolbar : null,
+		buttons: _buttons,
 	});
+	console.info(_selfDialog);
 	return _selfDialog;
 }
