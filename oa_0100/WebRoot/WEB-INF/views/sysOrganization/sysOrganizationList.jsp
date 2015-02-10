@@ -14,10 +14,10 @@ $(function() {
 	
 	// 表格列数组
 	var gridColumnsArray = [[
-			{field: '<%=SysOrganization.ORG_GUID%>', title: '<%=SysOrganization.ORG_GUID_VO%>', width:80},
-		    {field: '<%=SysOrganization.PARENT_ORG_GUID%>', title: '<%=SysOrganization.PARENT_ORG_GUID_VO%>',width:80},  
-		    {field: '<%=SysOrganization.ORG_NAME%>', title: '<%=SysOrganization.ORG_NAME_VO%>', width:100},  
-		    {field: '<%=SysOrganization.ORG_LEVEL%>', title: '<%=SysOrganization.ORG_LEVEL_VO%>', width:150}, 
+			{field: 'orgGuid', title: "<%=SysOrganization.ORG_GUID_VO%>", width:80},
+		    {field: 'parentOrgGuid', title: '<%=SysOrganization.PARENT_ORG_GUID_VO%>',width:80},  
+		    {field: 'orgName', title: '<%=SysOrganization.ORG_NAME_VO%>', width:100},  
+		    {field: 'orgLevel', title: '<%=SysOrganization.ORG_LEVEL_VO%>', width:150}
 		]];
 	 
 	//表格操作按钮
@@ -26,7 +26,7 @@ $(function() {
 			text: '新增',
 			iconCls: 'icon-add',
 			handler: function(){
-				createMethod();
+				addMethod();
 				}
 		},'-',{
 			id:'sysOrganization_edit',
@@ -46,7 +46,7 @@ $(function() {
 	
 	//表格参数
 	var gridParams = {
-			url : '123' ,
+			url : '${ctx}/sysOrganization/query' ,
 			columns : gridColumnsArray,
 			toolbar : gridToolBarBtnArray,
 			height:500,
@@ -57,28 +57,28 @@ $(function() {
 	var sysOrganizationDataGrid = createDataGrid($('#sysOrganizationTable'), gridParams);
 });
 	//新增方法
-	function createMethod() {
+	function addMethod() {
 		$('#sysOrganizationCreateDialog').dialog({    
 		    title: '新增组织机构',    
 		    width: 400,    
 		    height: 200,    
 		    closed: false,    
 		    cache: false,    
-		    href: '${ctx}/sysOrganization/sysOrganizationCreate',    
+		    href: '${ctx}/sysOrganization/sysOrganizationaddUI',    
 		    modal: true,
 		    
 		});    
 	}
 	
 	//编辑方法
-	function editMethod() {
+	function editMethod(id) {
 		$('#sysOrganizationCreateDialog').dialog({    
 		    title: '编辑组织机构',    
 		    width: 400,    
 		    height: 200,    
 		    closed: false,    
 		    cache: false,    
-		    href: '${ctx}/sysOrganization/sysOrganizationEdit',    
+		    href: '${ctx}/sysOrganization/sysOrganizationEditUI/'+id,    
 		    modal: true,
 		    
 		});    

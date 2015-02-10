@@ -1,5 +1,7 @@
 package com.bjgydx.graduate.service.Impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,11 @@ public class SysOrganizationServiceImpl implements SysOrganizationService {
 	@Override
 	public SysOrganization getEntity(String sysOrganizationId) {
 		return sysOrganizationDao.getById(sysOrganizationId);
+	}
+
+	@Override
+	public List<SysOrganization> query() {
+		return sysOrganizationDao.findAll();
 	}
 
 }

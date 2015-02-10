@@ -1,4 +1,4 @@
-package com.bjgydx.graduate.base.Impl;
+package com.bjgydx.graduate.base.dao.Impl;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 
-import com.bjgydx.graduate.base.BaseDao;
+import com.bjgydx.graduate.base.dao.BaseDao;
 
 @SuppressWarnings("unchecked")
 public abstract class BaseDaoImpl<T> implements BaseDao<T> {

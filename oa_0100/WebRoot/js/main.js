@@ -23,12 +23,7 @@ function createDataGrid(gridObj,gridParamsObj) {
 		columns : gridParamsObj.columns,
 		idField : gridParamsObj.idField != undefined ? gridParamsObj.idField : null,
 		toolbar : gridParamsObj.toolbar != undefined ? gridParamsObj.toolbar : null,
-		loadFilter : function(data) {
-			if (gridParamsObj.loadFilter != undefined) {
-				eval(gridParamsObj.loadFilter(data));
-			}
-			return data;
-		},
+		
 	});
 	return dataGridObj;
 }

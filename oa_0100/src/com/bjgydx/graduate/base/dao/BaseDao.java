@@ -1,4 +1,4 @@
-package com.bjgydx.graduate.base;
+package com.bjgydx.graduate.base.dao;
 
 import java.util.List;
 

@@ -1,5 +1,7 @@
 package com.bjgydx.graduate.service;
 
+import java.util.List;
+
 import com.bjgydx.graduate.model.SysOrganization;
 
 public interface SysOrganizationService {
@@ -11,6 +13,8 @@ public interface SysOrganizationService {
 	void delById(String sysOrganizationId);
 
 	SysOrganization getEntity(String sysOrganizationId);
+
+	List<SysOrganization> query();
 
 	
 

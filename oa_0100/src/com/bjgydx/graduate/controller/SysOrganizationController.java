@@ -1,9 +1,14 @@
 package com.bjgydx.graduate.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bjgydx.graduate.model.SysOrganization;
@@ -14,14 +19,29 @@ import com.bjgydx.graduate.service.SysOrganizationService;
 public class SysOrganizationController {
 	@Autowired
 	private SysOrganizationService sysOrganizationService;
+	
+	final String LIST_PATH = "sysOrganization/sysOrganizationList";
+	
+	@RequestMapping("/sysOrganizationList")
+	public String getList() {
+		return LIST_PATH;
+	}
+	
 	/**
-	 * 返回列表
+	 * 返回列表数据
 	 * @return
 	 */
-	@RequestMapping("/sysOrganizationList")
-	public ModelAndView list() {
-		ModelAndView mav = new ModelAndView("sysOrganization/sysOrganizationList");
-		return mav;
+	@RequestMapping("/query")
+	@ResponseBody
+	public Map<String, Object> query() {
+		List<SysOrganization> sysOrganizations = sysOrganizationService.query();
+		if(null != sysOrganizations) {
+			Map<String, Object> result = new HashMap<String, Object>();
+			result.put("total", sysOrganizations.size());
+			result.put("rows", sysOrganizations);
+			return result;
+		}
+		return null;
 	}
 	
 	/**
@@ -51,7 +71,7 @@ public class SysOrganizationController {
 	 * @param sysOrganizationId
 	 * @return
 	 */
-	@RequestMapping("/sysOrganizationEdit/{sysOrganizationId}")
+	@RequestMapping("/sysOrganizationEditUI/{sysOrganizationId}")
 	public ModelAndView editUI(@PathVariable("sysOrganizationId") String sysOrganizationId) {
 		SysOrganization sysOrganization = sysOrganizationService.getEntity(sysOrganizationId);
 		ModelAndView mav = new ModelAndView("sysOrganization/sysOrganizationSaveUI");
