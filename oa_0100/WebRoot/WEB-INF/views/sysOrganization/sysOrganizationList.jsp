@@ -26,7 +26,7 @@ $(function() {
 			text: '新增',
 			iconCls: 'icon-add',
 			handler: function(){
-				addMethod();
+				addMethod($('#sysOrganizationCreateDialog'),'${ctx}/sysOrganization/sysOrganizationaddUI');
 				}
 		},'-',{
 			id:'sysOrganization_edit',
@@ -57,14 +57,22 @@ $(function() {
 	var sysOrganizationDataGrid = createDataGrid($('#sysOrganizationTable'), gridParams);
 });
 	//新增方法
-	function addMethod() {
+	function addMethod(dialogObj,url) {
 		var dialogParamsObj = {
 			title: '组织机构',    
 		    width: 400,    
 		    height: 200,    
-		    url: '${ctx}/sysOrganization/sysOrganizationaddUI',    
+		    url: url,
+		    buttons:[{
+		    	id : 'saveSysOrganization',
+				iconCls : 'icon-ok',
+				text : '保存',
+				handler : function() {
+					alert('save');
+				}
+		    }]
 		};
-		var sysOrganizationCreateDialog = createDialog('add',$('#sysOrganizationCreateDialog'),dialogParamsObj);
+		var sysOrganizationCreateDialog = createDialog('add', dialogObj, dialogParamsObj);
 	}
 	
 	//编辑方法
