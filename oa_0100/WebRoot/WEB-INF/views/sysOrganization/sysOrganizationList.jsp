@@ -58,6 +58,7 @@ $(function() {
 });
 	//新增方法
 	function addMethod(dialogObj,url) {
+		debugger;
 		var dialogParamsObj = {
 			title: '组织机构',    
 		    width: 400,    

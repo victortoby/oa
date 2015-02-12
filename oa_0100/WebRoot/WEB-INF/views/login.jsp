@@ -4,12 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>后台管理系统</title>
-<link rel="stylesheet" type="text/css"
-	href="js/themes/default/easyui.css">
-<link rel="stylesheet" type="text/css" href="js/themes/icon.css">
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
-<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="js/locale/easyui-lang-zh_CN.js"></script>
+<jsp:include page="resource.jsp"></jsp:include>
 <style type="text/css">
 a {
 	text-decoration: none;
