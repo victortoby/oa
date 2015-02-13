@@ -1,10 +1,16 @@
 package com.bjgydx.graduate.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -17,9 +23,11 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name="SYS_ORGANIZATION")
 public class SysOrganization {
 	private String orgGuid;
-	private String parentOrgGuid;
 	private String orgName;
 	private Integer orgLevel;
+	private Set<SysOrganization> children = new HashSet<SysOrganization>();
+	private SysOrganization parent;
+	private Set<User> users = new HashSet<User>();
 	
 	/**页面列表字段*/
 	public static final String ORG_GUID = "orgGuid";
@@ -43,13 +51,6 @@ public class SysOrganization {
 	public void setOrgGuid(String orgGuid) {
 		this.orgGuid = orgGuid;
 	}
-	@Column(name="parent_org_guid")
-	public String getParentOrgGuid() {
-		return parentOrgGuid;
-	}
-	public void setParentOrgGuid(String parentOrgGuid) {
-		this.parentOrgGuid = parentOrgGuid;
-	}
 	@Column(name="org_name")
 	public String getOrgName() {
 		return orgName;
@@ -63,6 +64,27 @@ public class SysOrganization {
 	}
 	public void setOrgLevel(Integer orgLevel) {
 		this.orgLevel = orgLevel;
+	}
+	@OneToMany(cascade = {CascadeType.ALL}, mappedBy = "parent")
+	public Set<SysOrganization> getChildren() {
+		return children;
+	}
+	public void setChildren(Set<SysOrganization> children) {
+		this.children = children;
+	}
+	@ManyToOne
+	public SysOrganization getParent() {
+		return parent;
+	}
+	public void setParent(SysOrganization parent) {
+		this.parent = parent;
+	}
+	@OneToMany(cascade = {CascadeType.ALL}, mappedBy = "sysOrganization")
+	public Set<User> getUsers() {
+		return users;
+	}
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 
 }

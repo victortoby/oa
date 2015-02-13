@@ -9,7 +9,7 @@
 		</tr>
 		<tr>
 			<th><label><%=SysOrganization.ORG_NAME_VO%>:</label></th>
-			<td><input name="orgName" class="easyui-validatebox" data-options="required : true"></td>
+			<td><input name="orgName" class="easyui-validatebox" data-options="required : true, validType : ['length[0,20]']"></td>
 		</tr>
 	</table>
 </form>
