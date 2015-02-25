@@ -1,21 +1,12 @@
 package com.bjgydx.graduate.service;
 
-import java.util.List;
-
+import com.bjgydx.graduate.base.service.IBaseService;
 import com.bjgydx.graduate.model.SysOrganization;
-
-public interface SysOrganizationService {
-
-	void save(SysOrganization sysOrganization);
-
-	void update(SysOrganization sysOrganization);
-
-	void delById(String sysOrganizationId);
-
-	SysOrganization getEntity(String sysOrganizationId);
-
-	List<SysOrganization> query();
-
-	
+/**
+ * 组织机构Service接口
+ * @author KAI
+ *
+ */
+public interface SysOrganizationService extends IBaseService<SysOrganization, String> {
 
 }

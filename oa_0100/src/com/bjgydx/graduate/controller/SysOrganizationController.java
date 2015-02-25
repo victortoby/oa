@@ -34,13 +34,13 @@ public class SysOrganizationController {
 	@RequestMapping("/query")
 	@ResponseBody
 	public Map<String, Object> query() {
-		List<SysOrganization> sysOrganizations = sysOrganizationService.query();
-		if(null != sysOrganizations) {
-			Map<String, Object> result = new HashMap<String, Object>();
-			result.put("total", sysOrganizations.size());
-			result.put("rows", sysOrganizations);
-			return result;
-		}
+//		List<SysOrganization> sysOrganizations = sysOrganizationService.query();
+//		if(null != sysOrganizations) {
+//			Map<String, Object> result = new HashMap<String, Object>();
+//			result.put("total", sysOrganizations.size());
+//			result.put("rows", sysOrganizations);
+//			return result;
+//		}
 		return null;
 	}
 	
@@ -62,7 +62,7 @@ public class SysOrganizationController {
 	 */
 	@RequestMapping("/sysOrganizationAdd")
 	public String add(SysOrganization sysOrganization) {
-		sysOrganizationService.save(sysOrganization);
+//		sysOrganizationService.save(sysOrganization);
 		return "redirect:/sysOrganization/sysOrganizationList";
 	}
 	
@@ -73,9 +73,9 @@ public class SysOrganizationController {
 	 */
 	@RequestMapping("/sysOrganizationEditUI/{sysOrganizationId}")
 	public ModelAndView editUI(@PathVariable("sysOrganizationId") String sysOrganizationId) {
-		SysOrganization sysOrganization = sysOrganizationService.getEntity(sysOrganizationId);
+//		SysOrganization sysOrganization = sysOrganizationService.getEntity(sysOrganizationId);
 		ModelAndView mav = new ModelAndView("sysOrganization/sysOrganizationSaveUI");
-		mav.addObject("sysOrganization", sysOrganization);
+//		mav.addObject("sysOrganization", sysOrganization);
 		return mav;
 	}
 	
@@ -85,7 +85,7 @@ public class SysOrganizationController {
 	 */
 	@RequestMapping("/sysOrganizationEdit")
 	public String edit(SysOrganization sysOrganization) {
-		sysOrganizationService.update(sysOrganization);
+//		sysOrganizationService.update(sysOrganization);
 		return "redirect:/sysOrganization/sysOrganizationList";
 	}
 	
@@ -96,7 +96,7 @@ public class SysOrganizationController {
 	 */
 	@RequestMapping("/sysOrganizationDelete/{sysOrganizationId}")
 	public String delete(@PathVariable("sysOrganizationId") String sysOrganizationId) {
-		sysOrganizationService.delById(sysOrganizationId);
+//		sysOrganizationService.delById(sysOrganizationId);
 		return "redirect:/sysOrganization/sysOrganizationList";
 	}
 }

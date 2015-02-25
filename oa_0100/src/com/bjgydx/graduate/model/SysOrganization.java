@@ -17,11 +17,14 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 
+import com.bjgydx.graduate.base.vo.ViewObject;
+
 @Entity
 @Cacheable
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)//可读可写   
 @Table(name="SYS_ORGANIZATION")
-public class SysOrganization {
+public class SysOrganization extends ViewObject<String>{
+	private static final long serialVersionUID = 1L;
 	private String orgGuid;
 	private String orgName;
 	private Integer orgLevel;
@@ -45,10 +48,11 @@ public class SysOrganization {
 	@GeneratedValue(generator = "paymentableGenerator")    
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")   
 	@Column(name="org_guid")	
-	public String getOrgGuid() {
+	@Override
+	public String getId() {
 		return orgGuid;
 	}
-	public void setOrgGuid(String orgGuid) {
+	public void setId(String orgGuid) {
 		this.orgGuid = orgGuid;
 	}
 	@Column(name="org_name")
@@ -86,5 +90,4 @@ public class SysOrganization {
 	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
-
 }

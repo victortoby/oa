@@ -7,6 +7,6 @@ import com.bjgydx.graduate.dao.SysOrganizationDao;
 import com.bjgydx.graduate.model.SysOrganization;
 
 @Repository
-public class SysOrganizationDaoImpl extends BaseDaoImpl<SysOrganization> implements SysOrganizationDao {
+public class SysOrganizationDaoImpl extends BaseDaoImpl<SysOrganization, String> implements SysOrganizationDao {
 
 }
