@@ -57,9 +57,20 @@ public abstract class BaseAbstractService<E extends ViewObject<K>, K extends Ser
 		}
 		return true;
 	}
+	
+	@Override
+	public Boolean saveOrUpdate(E viewObject) throws Exception {
+		try {
+			baseDao.update(viewObject);
+		} catch(Exception error) {
+			log.error(error.getMessage(), error);
+			throw error;
+		}
+		return true;
+	} 
 
 	@Override
-	public E saveOrUpdate(E viewObject) throws Exception {
+	public E saveOrUpdateReturnViewObject(E viewObject) throws Exception {
 		try {
 			baseDao.saveOrUpdate(viewObject);
 		} catch(Exception error) {
@@ -111,6 +122,6 @@ public abstract class BaseAbstractService<E extends ViewObject<K>, K extends Ser
 			throw error;
 		}
 		return true;
-	} 
+	}
 
 }

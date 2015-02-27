@@ -32,7 +32,15 @@ public interface IBaseService<E extends ViewObject<K>, K extends Serializable> {
 	 * @return 如果更新成功,返回TRUE
 	 * @throws Exception
 	 */
-	Boolean update(E viewObject)throws Exception;
+	Boolean update(E viewObject) throws Exception;
+	
+	/**
+	 * 保存或更新对象
+	 * @param viewObject
+	 * @return 如果保存或更新成功,返回TRUE
+	 * @throws Exception
+	 */
+	Boolean saveOrUpdate(E viewObject) throws Exception;
 	
 	/**
 	 * 保存或更新对象
@@ -40,7 +48,7 @@ public interface IBaseService<E extends ViewObject<K>, K extends Serializable> {
 	 * @return 保存后的对象，如果保存成功
 	 * @throws Exception
 	 */
-	E saveOrUpdate(E viewObject) throws Exception;
+	E saveOrUpdateReturnViewObject(E viewObject) throws Exception;
 	
 	/**
 	 * 根据ID查找实体

@@ -73,7 +73,7 @@
 	    </tx:advice>
 		<!-- AOP实现事务 -->
 		<aop:config>
-			<aop:pointcut expression="execution(public * com.bjgydx.graduate.service..*.*(..))" id="bussinessService"/>
+			<aop:pointcut expression="execution(public * com..service..*.*(..))" id="bussinessService"/>
 			<aop:advisor advice-ref="txAdvice" pointcut-ref="bussinessService"/>
 		</aop:config>
 		<!-- hibernateTemplate -->
