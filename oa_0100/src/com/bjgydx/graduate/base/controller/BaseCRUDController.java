@@ -10,9 +10,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bjgydx.graduate.base.Message;
+import com.bjgydx.graduate.base.converter.IPOIDConverter;
+import com.bjgydx.graduate.base.converter.Impl.POIDConverterFactory;
 import com.bjgydx.graduate.base.queryform.BasePageQueryForm;
 import com.bjgydx.graduate.base.service.IBaseService;
 import com.bjgydx.graduate.base.utils.Pagination;
@@ -32,7 +35,7 @@ public abstract class BaseCRUDController<
 		E extends ViewObject<K>,
 		K extends Serializable>  extends BaseController {
 	
-	protected static Logger logger = Logger.getLogger(BaseCRUDController.class);
+	protected static Logger log = Logger.getLogger(BaseCRUDController.class);
 
 	private IBaseService<E,K> baseService;
 	
@@ -61,14 +64,21 @@ public abstract class BaseCRUDController<
 	// 在子类中重写此方法，在查看时进行操作，如数据类型的转换，关联实体对象的转换
 	protected abstract void beforeView(E savingEntity, Model model) throws ApplicationException;
 
+	//获取ID的类型，需要在子类中复写此方法
 	protected abstract Class<K> getPOIDType();
 	
 	// 在子类中重写此方法，在编辑时进行操作，如数据类型的转换，关联实体对象的转换
 	protected abstract void beforeEdit(E savingEntity, Model model) throws ApplicationException;
 	
+	// 获取自定义表名，需在子类中复写此方法
+	protected abstract String getAttachTableName();
+	
+	//需要在子类中实现的方法，在删除后进行的操作
+	protected abstract void afterRemove(K[] poids);
+	
 	public BaseCRUDController() {}
 
-
+	//暂时未处理用户操作日志和权限，如需处理放开此段代码
 //	public BaseCRUDController(SysUserService sysUserService) {
 //		super.setSysUserService(sysUserService);
 //	}
@@ -87,10 +97,10 @@ public abstract class BaseCRUDController<
 		this.baseService = baseService;
 	}
 	
-//	@SuppressWarnings("unchecked")
-//	protected IPOIDConverter<K> getPOIDConverter() {
-//		return (IPOIDConverter<K>) POIDConverterFactory.getInstance().getSimpleConverter(getPOIDType());
-//	}
+	@SuppressWarnings("unchecked")
+	protected IPOIDConverter<K> getPOIDConverter() {
+		return (IPOIDConverter<K>) POIDConverterFactory.getInstance().getSimpleConverter(getPOIDType());
+	}
 
 	@RequestMapping(value = "/init", method = RequestMethod.GET)
 	public String init() {
@@ -98,7 +108,7 @@ public abstract class BaseCRUDController<
 			beforeInit();
 		} catch (ApplicationException e) {
 			e.printStackTrace();
-			logger.error("系统异常: " + e , e.fillInStackTrace());
+			log.error("系统异常: " + e , e.fillInStackTrace());
 		}
 		return getListPath();
 	}
@@ -129,7 +139,7 @@ public abstract class BaseCRUDController<
 			}
 		}catch(Exception e){
 			e.printStackTrace();
-			logger.error("系统异常: " + e , e.fillInStackTrace());
+			log.error("系统异常: " + e , e.fillInStackTrace());
 		}
 		return getEditPath();
 	}
@@ -145,7 +155,7 @@ public abstract class BaseCRUDController<
 			}
 		}catch(Exception e){
 			e.printStackTrace();
-			logger.error("系统异常: " + e , e.fillInStackTrace());;
+			log.error("系统异常: " + e , e.fillInStackTrace());;
 		}
 		return getEditPath();
 	}
@@ -158,7 +168,7 @@ public abstract class BaseCRUDController<
 			baseService.saveOrUpdate(entity);
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("系统异常: " + e , e.fillInStackTrace());
+			log.error("系统异常: " + e , e.fillInStackTrace());
 			return createMessage(Boolean.FALSE, "保存失败！" + e.getMessage());
 		}
 
@@ -189,87 +199,70 @@ public abstract class BaseCRUDController<
 			returnEntity = baseService.saveOrUpdateReturnViewObject(entity);
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("系统异常: " + e , e.fillInStackTrace());
+			log.error("系统异常: " + e , e.fillInStackTrace());
 			return createMessage(Boolean.FALSE, "保存失败！" + e.getMessage());
 		}
 
 		return  createMessage(Boolean.TRUE, "保存成功！",returnEntity != null ?returnEntity.getId().toString():"");
 	}
 
-//	@RequestMapping(value = "/deleteBatch", method = RequestMethod.POST)
-//	@ResponseBody
-//	public Message delete(@RequestParam("poids[]") K[] poids) {
-//		
-//		try{
-//			if (null != poids) {
-//				if (poids instanceof Serializable) {
-//					poids = (K[]) getPOIDConverter().toPOID((Serializable[]) poids);
-//				}
-//				
-//				beforeRemove(poids);
-//				baseService.deleteByIds(poids);
-//			}
-//		}catch(Exception e){
-//			e.printStackTrace();
-//			logger.error("系统异常: " + e , e.fillInStackTrace());
-//			String detailMsg = "";
-//			if (e.getMessage().contains("ORA-02292")) {
-//				if(poids.length == 1) {
-//					detailMsg = "<br>此数据已被使用，不可删除！";
-//				} else {
-//					detailMsg = "<br>要删除的数据中有被使用的数据，不可删除！";
-//				}
-//			}
-//			return createMessage(Boolean.FALSE, "删除失败！" + detailMsg);
-//		}
-//		return createMessage(Boolean.TRUE, "删除成功！");
-//	}
-//	
+	@RequestMapping(value = "/deleteBatch", method = RequestMethod.POST)
+	@ResponseBody
+	public Message delete(@RequestParam("poids[]") K[] poids) {
+		try{
+			if (null != poids) {
+				if (poids instanceof Serializable) {
+					poids = (K[]) getPOIDConverter().toPOID((Serializable[]) poids);
+				}
+				beforeRemove(poids);
+				baseService.deleteByIds(poids);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("系统异常: " + e , e.fillInStackTrace());
+			String detailMsg = "";
+			if (e.getMessage().contains("ORA-02292")) {
+				if(poids.length == 1) {
+					detailMsg = "<br>此数据已被使用，不可删除！";
+				} else {
+					detailMsg = "<br>要删除的数据中有被使用的数据，不可删除！";
+				}
+			}
+			return createMessage(Boolean.FALSE, "删除失败！" + detailMsg);
+		}
+		return createMessage(Boolean.TRUE, "删除成功！");
+	}
+	
+	/**
+	 * 未写上传和下载，如需要放开此注释代码
+	 * @param poids
+	 * @return
+	 */
 //	@RequestMapping(value = "/deleteBatchWithAttach", method = RequestMethod.POST)
 //	@ResponseBody
 //	public Message deleteWithAttach(@RequestParam("poids[]") K[] poids) {
-//		
-//		try{
+//		try {
 //			if (null != poids) {
 //				if (poids instanceof Serializable) {
-//					poids = (K[]) getPOIDConverter().toPOID((Serializable[]) poids);
+//					poids = (K[]) getPOIDConverter().toPOID(
+//							(Serializable[]) poids);
 //				}
-//				
 //				beforeRemove(poids);
 //				String attachTableName = getAttachTableName();
-//				Map<String,List<Map<Object, Object>>> diskFileNameListMap = baseService.queryDiskFileNameByMainGuids(poids, attachTableName);
+//				Map<String, List<Map<Object, Object>>> diskFileNameListMap = baseService.queryDiskFileNameByMainGuids(poids, attachTableName);
 //				Boolean isSuccess = baseService.deleteByIds(poids);
 //				afterRemove(poids);
 //				if (isSuccess) {
-//					for (Entry<String,List<Map<Object, Object>>> entry : diskFileNameListMap.entrySet()) {
-//						baseService.delDiskFiles(entry.getKey(), entry.getValue());
+//					for (Entry<String, List<Map<Object, Object>>> entry : diskFileNameListMap	.entrySet()) {
+//						baseService.delDiskFiles(entry.getKey(),entry.getValue());
 //					}
 //				}
 //			}
-//		}catch(Exception e){
+//		} catch (Exception e) {
 //			e.printStackTrace();
-//			logger.error("系统异常: " + e , e.fillInStackTrace());
+//			log.error("系统异常: " + e, e.fillInStackTrace());
 //			return createMessage(Boolean.FALSE, "删除失败！" + e.getMessage());
 //		}
 //		return createMessage(Boolean.TRUE, "删除成功！");
-//	}
-//
-//	
-//
-
-//
-	
-//
-
-//	
-
-//
-//	// 获取自定义表名，需在子类中复写此方法
-//	protected String getAttachTableName() {
-//		return null;
-//	}
-//	
-//	protected void afterRemove(K[] poids) {
-//		
 //	}
 }
