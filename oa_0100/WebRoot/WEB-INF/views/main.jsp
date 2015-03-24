@@ -88,7 +88,7 @@
 						                <li><span><a link="http://www.baidu.com">内容管理</a></span></li>
 						            </ul>
 						        </li>
-				                <li><span><a link="${ctx}/sysOrganization/sysOrganizationList">组织机构管理</a></span></li>
+				                <li><span><a link="${ctx}/sysOrganization/init">组织机构管理</a></span></li>
 						        <li state="closed">
 						            <span>配置管理</span>
 						            <ul>

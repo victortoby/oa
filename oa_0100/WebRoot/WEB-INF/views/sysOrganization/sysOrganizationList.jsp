@@ -26,7 +26,7 @@ $(function() {
 			text: '新增',
 			iconCls: 'icon-add',
 			handler: function(){
-				addMethod($('#sysOrganizationCreateDialog'),'${ctx}/sysOrganization/sysOrganizationaddUI');
+				addMethod($('#sysOrganizationCreateDialog'),'${ctx}/sysOrganization/add');
 				}
 		},'-',{
 			id:'sysOrganization_edit',
