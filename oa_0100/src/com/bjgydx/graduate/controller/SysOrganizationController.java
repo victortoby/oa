@@ -15,12 +15,13 @@ import com.bjgydx.graduate.service.SysOrganizationService;
 @Controller
 @RequestMapping("/sysOrganization")
 public class SysOrganizationController extends  BaseCRUDController<SysOrganizationpageQueryForm, SysOrganization, String>{
-	@Autowired
+	
 	private SysOrganizationService sysOrganizationService;
 	
 	final String LIST_PATH = "sysOrganization/sysOrganizationList";
 	
 	final String EDIT_PATH = "sysOrganization/sysOrganizationEdit";
+	
 	
 //	@RequestMapping("/sysOrganizationList")
 //	public String getList() {
@@ -99,6 +100,16 @@ public class SysOrganizationController extends  BaseCRUDController<SysOrganizati
 ////		sysOrganizationService.delById(sysOrganizationId);
 //		return "redirect:/sysOrganization/sysOrganizationList";
 //	}
+
+	public SysOrganizationService getSysOrganizationService() {
+		return sysOrganizationService;
+	}
+
+	@Autowired
+	public void setSysOrganizationService(	SysOrganizationService sysOrganizationService) {
+		this.sysOrganizationService = sysOrganizationService;
+		super.setBaseService(sysOrganizationService);
+	}
 
 	@Override
 	protected String getListPath() {

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page language="java" import="com.bjgydx.graduate.model.SysOrganization"%>
 
-<form id="sysOrganizationForm" method="post" action="/sysOrganization/saveOrUpdate">
+<form id="sysOrganizationForm" method="post" action="${ctx}/sysOrganization/saveOrUpdate">
 	<table>
 		<tr>
 			<th><label><%=SysOrganization.PARENT_ORG_GUID_VO%>:</label></th>
