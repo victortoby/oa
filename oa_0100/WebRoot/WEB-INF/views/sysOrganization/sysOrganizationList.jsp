@@ -56,22 +56,27 @@ $(function() {
 	//创建表格
 	var sysOrganizationDataGrid = createDataGrid($('#sysOrganizationTable'), gridParams);
 });
+
+    // 自定义Button ------开始
+	var dialogButtons = [];
+	var diaSaveBtn = {
+    	iconCls:'icon-save',
+		text:'保存',
+		handler:function(){
+			saveWithWin($('#sysOrganizationForm'),$('#sysOrganizationTable'),$('#sysOrganizationCreateDialog'),true);
+		}
+	};
+	dialogButtons.push(diaSaveBtn);
+    
+    
 	//新增方法
 	function addMethod(dialogObj,url) {
-		debugger;
 		var dialogParamsObj = {
 			title: '组织机构',    
 		    width: 400,    
 		    height: 200,    
 		    url: url,
-		    buttons:[{
-		    	id : 'saveSysOrganization',
-				iconCls : 'icon-ok',
-				text : '保存',
-				handler : function() {
-					alert('save');
-				}
-		    }]
+		    buttons:dialogButtons
 		};
 		var sysOrganizationCreateDialog = createDialog('add', dialogObj, dialogParamsObj);
 	}
